@@ -36,7 +36,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "deploy": "CI='' react-scripts build",
     "test": "react-scripts test --setupFilesAfterEnv=@testing-library/jest-dom/extend-expect",
     "eject": "react-scripts eject",
     "jsdoc": "jsdoc -c ./jsdoc.json",
