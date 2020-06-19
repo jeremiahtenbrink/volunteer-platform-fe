@@ -8,9 +8,10 @@ import { register } from '../actions';
 import sampleProfile from '../assets/undraw_profile.svg';
 import { device } from '../styled/deviceBreakpoints';
 import moment from 'moment';
-export const Signup = props => {
-  const [state, dispatch] = useStateValue();
 
+export const Signup = props => {
+  const [ state, dispatch ] = useStateValue();
+  
   /**
    * @type {User}
    */
@@ -21,145 +22,138 @@ export const Signup = props => {
     phoneNumber: '',
     email: '',
     uid: '',
-    DOB: moment(moment().subtract(18, 'years')),
+    DOB: moment( moment().subtract( 18, 'years' ) ),
   };
-  const [localState, setLocalState] = useState(user);
+  const [ localState, setLocalState ] = useState( user );
   //const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (state.auth.googleAuthUser) {
+  
+  useEffect( () => {
+    if( state.auth.googleAuthUser ){
       user.uid = state.auth.googleAuthUser.uid;
-      if (state.auth.googleAuthUser.displayName) {
-        const name = state.auth.googleAuthUser.displayName.split(' ');
-        user.firstName = name[0];
-        user.lastName = name[1];
+      if( state.auth.googleAuthUser.displayName ){
+        const name = state.auth.googleAuthUser.displayName.split( ' ' );
+        user.firstName = name[ 0 ];
+        user.lastName = name[ 1 ];
       }
-
-      if (state.auth.googleAuthUser.email) {
+      
+      if( state.auth.googleAuthUser.email ){
         user.email = state.auth.googleAuthUser.email;
       }
-
-      if (state.auth.googleAuthUser.phoneNumber) {
+      
+      if( state.auth.googleAuthUser.phoneNumber ){
         user.phoneNumber = state.auth.googleAuthUser.phoneNumber;
       }
-
-      if (state.auth.googleAuthUser.photoURL) {
+      
+      if( state.auth.googleAuthUser.photoURL ){
         user.photoURL = state.auth.googleAuthUser.photoURL;
       }
-      setLocalState({ ...user });
+      setLocalState( { ...user } );
     }
-  }, [state]);
-
+  }, [ state ] );
+  
   const handleSubmit = e => {
     e.preventDefault();
-    register({...localState, DOB: localState.DOB.format('LL')}, dispatch);
+    register( { ...localState, DOB: localState.DOB.format( 'LL' ) }, dispatch );
     regUserSuccessModal();
   };
-
-  const regUserSuccessModal = successModal({
+  
+  const regUserSuccessModal = successModal( {
     title: 'Registration Success!',
     maskStyle: { background: `rgba(97, 37, 0, 0.2)` },
-    onOk: () => props.history.push('/dashboard'),
-  });
-
+    onOk: () => props.history.push( '/dashboard' ),
+  } );
+  
   const cancelRegister = () => {
-    message.warning('Registration is required to continue using Voluntier');
+    message.warning( 'Registration is required to continue using Voluntier' );
   };
-
-  const handleChange = (name, value) => {
-    setLocalState({ ...localState, [name]: value });
+  
+  const handleChange = ( name, value ) => {
+    setLocalState( { ...localState, [ name ]: value } );
   };
-
-  return (
-    <StyledDiv>
-      <h1>Get Registered</h1>
-      {localState.photoURL ? (
-        <Avatar
-          src={localState.photoURL}
-          shape="square"
-          size={64}
-          icon="user"
-        />
-      ) : (
-        <img src={sampleProfile} alt="undraw profile" />
-      )}
-      <Form layout={'vertical'} onSubmit={handleSubmit}>
-        <div className="row-half">
-          <Form.Item label="First Name" required>
-            <Input
-              name={'firstName'}
-              value={localState.firstName}
-              onChange={e => handleChange('firstName', e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item label="Last Name" required>
-            <Input
-              name={'lastName'}
-              value={localState.lastName}
-              onChange={e => handleChange('lastName', e.target.value)}
-            />
-          </Form.Item>
-        </div>
-        <div className="row-full">
-          <Form.Item label="Address" required>
-            <Autocomplete
-              name="address"
-              className="google-autocomplete"
-              onPlaceSelected={place => {
-                setLocalState({
-                  ...localState,
-                  address: place.formatted_address,
-                });
-              }}
-              types={['address']}
-              componentRestrictions={{ country: 'us' }}
-              value={localState.address}
-              onChange={e => handleChange('address', e.target.value)}
-            />
-          </Form.Item>
-        </div>
-        <div className="row-half">
-          <Form.Item label="Email" required>
-            <Input
-              name={'email'}
-              value={localState.email}
-              onChange={e => handleChange('email', e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item label="Phone Number" required>
-            <Input
-              name={'phoneNumber'}
-              value={localState.phoneNumber}
-              onChange={e => handleChange('phoneNumber', e.target.value)}
-            />
-          </Form.Item>
-        </div>
-        <div className="row-center">
-          <Form.Item label="Date of Birth" required>
-            <DatePicker
-              name="DOB"
-              value={localState.DOB}
-              onChange={e => handleChange('DOB', e)}
-              format={['MM/DD/YY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'MM-DD-YY']}
-            />
-          </Form.Item>
-        </div>
-        <div className="buttonStyles">
-          <StyledCancelButton onClick={cancelRegister} type="primary">
-            Cancel
-          </StyledCancelButton>
-          <StyledButton
-            onClick={handleSubmit}
-            disabled={state.auth.isLoading}
-            loading={state.auth.isLoading}
-            type="primary"
-          >
-            Register
-          </StyledButton>
-        </div>
-      </Form>
-    </StyledDiv>
-  );
+  
+  return ( <StyledDiv>
+    <h1>Get Registered</h1>
+    { localState.photoURL ? ( <Avatar
+      src={ localState.photoURL }
+      shape="square"
+      size={ 200 }
+      icon="user"
+    /> ) : ( <img src={ sampleProfile } alt="undraw profile"/> ) }
+    <Form layout={ 'vertical' } onSubmit={ handleSubmit }>
+      <div className="row-half">
+        <Form.Item label="First Name" required>
+          <Input
+            name={ 'firstName' }
+            value={ localState.firstName }
+            onChange={ e => handleChange( 'firstName', e.target.value ) }
+          />
+        </Form.Item>
+        <Form.Item label="Last Name" required>
+          <Input
+            name={ 'lastName' }
+            value={ localState.lastName }
+            onChange={ e => handleChange( 'lastName', e.target.value ) }
+          />
+        </Form.Item>
+      </div>
+      <div className="row-full">
+        <Form.Item label="Address" required>
+          <Autocomplete
+            name="address"
+            className="google-autocomplete"
+            onPlaceSelected={ place => {
+              setLocalState( {
+                ...localState, address: place.formatted_address,
+              } );
+            } }
+            types={ [ 'address' ] }
+            componentRestrictions={ { country: 'us' } }
+            value={ localState.address }
+            onChange={ e => handleChange( 'address', e.target.value ) }
+          />
+        </Form.Item>
+      </div>
+      <div className="row-half">
+        <Form.Item label="Email" required>
+          <Input
+            name={ 'email' }
+            value={ localState.email }
+            onChange={ e => handleChange( 'email', e.target.value ) }
+          />
+        </Form.Item>
+        <Form.Item label="Phone Number" required>
+          <Input
+            name={ 'phoneNumber' }
+            value={ localState.phoneNumber }
+            onChange={ e => handleChange( 'phoneNumber', e.target.value ) }
+          />
+        </Form.Item>
+      </div>
+      <div className="row-center">
+        <Form.Item label="Date of Birth" required>
+          <DatePicker
+            name="DOB"
+            value={ localState.DOB }
+            onChange={ e => handleChange( 'DOB', e ) }
+            format={ [ 'MM/DD/YY', 'MM/DD/YYYY', 'MM-DD-YYYY', 'MM-DD-YY' ] }
+          />
+        </Form.Item>
+      </div>
+      <div className="buttonStyles">
+        <StyledCancelButton onClick={ cancelRegister } type="primary">
+          Cancel
+        </StyledCancelButton>
+        <StyledButton
+          onClick={ handleSubmit }
+          disabled={ state.auth.isLoading }
+          loading={ state.auth.isLoading }
+          type="primary"
+        >
+          Register
+        </StyledButton>
+      </div>
+    </Form>
+  </StyledDiv> );
 };
 
 export default Signup;
@@ -167,7 +161,7 @@ export default Signup;
 const StyledDiv = styled.div`
   && {
     display: flex;
-    background: ${({ theme }) => theme.gray1};
+    background: ${ ( { theme } ) => theme.gray1 };
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -178,10 +172,10 @@ const StyledDiv = styled.div`
     justify-center: space-between;
     padding-bottom: 3rem;
     label {
-      color: ${({ theme }) => theme.primary8};
+      color: ${ ( { theme } ) => theme.primary8 };
 
       &::before {
-        color: ${({ theme }) => theme.primary8};
+        color: ${ ( { theme } ) => theme.primary8 };
       }
     }
     img {
@@ -203,12 +197,12 @@ const StyledDiv = styled.div`
       background-color: #fff;
       border-radius: 4px;
       border: 1px solid rgb(217, 217, 217);
-      font-family: ${({ theme }) => theme.bodytext};
+      font-family: ${ ( { theme } ) => theme.bodytext };
 
       &::placeholder {
         color: rgba(0, 0, 0, 0.35);
         font-size: 14px;
-        font-family: ${({ theme }) => theme.bodytext};
+        font-family: ${ ( { theme } ) => theme.bodytext };
       }
     }
     .row-half,
@@ -218,7 +212,7 @@ const StyledDiv = styled.div`
       justify-content: space-between;
       padding: 0 3.5rem;
 
-      @media ${device.tablet} {
+      @media ${ device.tablet } {
         width: 90%;
       }
 
@@ -244,7 +238,7 @@ const StyledDiv = styled.div`
       .ant-form-item {
         width: 45%;
 
-        @media ${device.tablet} {
+        @media ${ device.tablet } {
           margin-right: 0.8rem;
           margin-left: 0.8rem;
         }
@@ -264,22 +258,16 @@ const StyledDiv = styled.div`
 
 const formItemLayoutShort = {
   labelCol: {
-    xs: { span: 20 },
-    sm: { span: 20 },
-  },
-  wrapperCol: {
-    xs: { span: 20 },
-    sm: { span: 10 },
+    xs: { span: 20 }, sm: { span: 20 },
+  }, wrapperCol: {
+    xs: { span: 20 }, sm: { span: 10 },
   },
 };
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 24 },
-    sm: { span: 24 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 20 },
+    xs: { span: 24 }, sm: { span: 24 },
+  }, wrapperCol: {
+    xs: { span: 24 }, sm: { span: 20 },
   },
 };
